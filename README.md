@@ -48,6 +48,16 @@ Both commands will generate the executable binary named `sse`.
 This executable will be used in the following examples. 
 However, `go run main.go` can be used if the binary is missing.
 
+However, a pre-built container can be used. 
+Please consider that the keys and secrets must be attached to it via volumes at run time.
+
+```bash
+$ docker run -ti --rm \
+  -v $(pwd)/public.pem:/workspace-keys/public.pem \
+  -v $(pwd)/test-secrets:/workspace \
+  dimw/sse encrypt --workdir=/workspace --public-key-file=/workspace-keys/public.pem
+```
+
 ## Commands
 
 The following command will retrieve the supported commands.
