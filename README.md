@@ -1,5 +1,8 @@
 # Simple Secrets Encryptor
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/c5bf10a5bdc27cf25567/maintainability)](https://codeclimate.com/github/dimw/simple-secrets-encryptor/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/c5bf10a5bdc27cf25567/test_coverage)](https://codeclimate.com/github/dimw/simple-secrets-encryptor/test_coverage)
+
 This project can be used for encoding and decoding of a bunch of structured files containing key-value maps (e.g. YAML) 
 using asymmetric encryption ([RSA]). 
 This encryption allows the holders of the public key to perform the one way encryption without the possibility 
