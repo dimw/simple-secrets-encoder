@@ -1,0 +1,38 @@
+name: Test and Build
+on:
+  push:
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.16.2'
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: bin
+          path: build/sse
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Test
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: go test -v -mod=readonly -coverprofile c.out ./...
+          prefix: github.com/dimw/simple-secrets-encryptor
+
+      - name: Build
+        run: |
+          go get -d -v
+          go install -v
+          go build -o build/sse
