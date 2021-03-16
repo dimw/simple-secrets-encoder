@@ -92,7 +92,7 @@ func main() {
 						Usage: "Location of the public key",
 					},
 					&cli.IntFlag{
-						Name:  "bit-size",
+						Name:  "key-size",
 						Value: 2048,
 						Usage: "Key size",
 					},
