@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/dimw/simple-secrets-encryptor/cmd"
 	"github.com/dimw/simple-secrets-encryptor/cmd/decrypt"
 	"github.com/dimw/simple-secrets-encryptor/cmd/encrypt"
+	generate_keys "github.com/dimw/simple-secrets-encryptor/cmd/generate-keys"
 	"log"
 	"os"
 
@@ -104,13 +104,13 @@ func main() {
 				Aliases: []string{"g"},
 				Usage:   "Generate a pair of RSA keys",
 				Action: func(c *cli.Context) error {
-					args := cmd.GenerateRSAArgs{
+					args := generate_keys.GenerateRSAArgs{
 						PrivateKeyFilename: c.String("private-key-file"),
 						PublicKeyFilename:  c.String("public-key-file"),
 						KeySize:            c.Int("key-size"),
 						ReplaceKeys:        c.Bool("replace-keys"),
 					}
-					return cmd.GenerateRSA(args)
+					return generate_keys.GenerateRSA(args)
 				},
 			},
 		},

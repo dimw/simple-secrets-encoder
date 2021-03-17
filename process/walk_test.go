@@ -1,4 +1,4 @@
-package secrets
+package process
 
 import (
 	"crypto/rand"
@@ -18,7 +18,7 @@ func TestEncryptDecryptSecrets(t *testing.T) {
 	privateKey, _ := rsa.GenerateKey(rand.Reader, 2048)
 	encryptionProvider := crypto.CreateEncryptionProvider(&privateKey.PublicKey)
 
-	got, err := ProcessSecrets(data, encryptionProvider)
+	got, err := Walk(data, encryptionProvider)
 
 	assert.Nil(t, err)
 
@@ -31,7 +31,7 @@ func TestEncryptDecryptSecrets(t *testing.T) {
 	got["foo-s-e-c-r-e-t"] = got["foo-secret"]
 
 	decryptionProvider := crypto.CreateDecryptionProvider(privateKey)
-	got, err = ProcessSecrets(got, decryptionProvider)
+	got, err = Walk(got, decryptionProvider)
 	assert.Equal(t, "bar", got["foo"])
 	assert.Equal(t, "secret-bar", got["foo-secret"])
 	assert.Equal(t, "token-bar", got["fooToken"])

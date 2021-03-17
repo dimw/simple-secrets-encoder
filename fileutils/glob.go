@@ -1,4 +1,4 @@
-package glob
+package fileutils
 
 import (
 	"github.com/gobwas/glob"

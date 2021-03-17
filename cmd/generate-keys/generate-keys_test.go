@@ -1,4 +1,4 @@
-package cmd
+package generate_keys
 
 import (
 	"fmt"

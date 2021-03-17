@@ -1,4 +1,4 @@
-package secrets
+package process
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func ProcessSecrets(data map[string]interface{}, encryptionProvider *crypto.Provider) (map[string]interface{}, error) {
+func Walk(data map[string]interface{}, encryptionProvider *crypto.Provider) (map[string]interface{}, error) {
 
 	processedData := make(map[string]interface{})
 

@@ -2,7 +2,7 @@ package rsaio
 
 import (
 	"fmt"
-	"github.com/dimw/simple-secrets-encryptor/cmd"
+	generate_keys "github.com/dimw/simple-secrets-encryptor/cmd/generate-keys"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"os"
@@ -10,13 +10,13 @@ import (
 )
 
 func TestShouldLoadPrivateKey(t *testing.T) {
-	args := cmd.GenerateRSAArgs{
+	args := generate_keys.GenerateRSAArgs{
 		PrivateKeyFilename: fmt.Sprintf("tmp-private.%v.key", rand.Int()),
 		PublicKeyFilename:  fmt.Sprintf("tmp-public.%v.pem", rand.Int()),
 		KeySize:            2048,
 	}
 
-	err := cmd.GenerateRSA(args)
+	err := generate_keys.GenerateRSA(args)
 	assert.Nil(t, err)
 
 	privateKey, _ := LoadPrivateKey(args.PrivateKeyFilename)
@@ -27,13 +27,13 @@ func TestShouldLoadPrivateKey(t *testing.T) {
 }
 
 func TestShouldLoadPublicKey(t *testing.T) {
-	args := cmd.GenerateRSAArgs{
+	args := generate_keys.GenerateRSAArgs{
 		PrivateKeyFilename: fmt.Sprintf("tmp-private2.%v.key", rand.Int()),
 		PublicKeyFilename:  fmt.Sprintf("tmp-public2.%v.pem", rand.Int()),
 		KeySize:            2048,
 	}
 
-	err := cmd.GenerateRSA(args)
+	err := generate_keys.GenerateRSA(args)
 	assert.Nil(t, err)
 
 	publicKey, _ := LoadPublicKey(args.PublicKeyFilename)
