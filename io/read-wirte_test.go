@@ -61,7 +61,7 @@ func TestShouldWriteFileFormat(t *testing.T) {
 	}{
 		{name: "Should write to .yaml", filename: "foo.*.yaml", expectedContent: "foo: bar"},
 		{name: "Should write to .yml", filename: "foo.*.yml", expectedContent: "foo: bar"},
-		{name: "Should write to .json", filename: "foo.*.json", expectedContent: `{"foo":"bar"}`},
+		{name: "Should write to .json", filename: "foo.*.json", expectedContent: "{\n  \"foo\": \"bar\"\n}"},
 	}
 
 	for _, tt := range tests {
