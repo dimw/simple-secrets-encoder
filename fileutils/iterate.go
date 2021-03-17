@@ -1,6 +1,7 @@
 package fileutils
 
 import (
+	"fmt"
 	"github.com/dimw/simple-secrets-encryptor/crypto"
 	"github.com/dimw/simple-secrets-encryptor/io"
 	"github.com/dimw/simple-secrets-encryptor/process"
@@ -14,11 +15,10 @@ func IterateFiles(workdir string, filenamePattern string, provider *crypto.Provi
 	}
 
 	for _, filename := range files {
-		log.Printf(`Decoding: %v`, filename)
-		data, err := io.ReadYaml(filename)
-
+		log.Printf(`Reading: %v`, filename)
+		data, err := io.Read(filename)
 		if err != nil {
-			log.Fatalf("Error loading %v", filename)
+			return fmt.Errorf("error reading file: %v", filename)
 		}
 
 		encodedData, err := process.Walk(data, provider)
@@ -26,7 +26,7 @@ func IterateFiles(workdir string, filenamePattern string, provider *crypto.Provi
 			return err
 		}
 
-		err = io.WriteYaml(filename, encodedData)
+		err = io.Write(filename, encodedData)
 		if err != nil {
 			return err
 		}

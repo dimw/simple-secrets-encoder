@@ -2,6 +2,7 @@ package generate_keys
 
 import (
 	"fmt"
+	"github.com/dimw/simple-secrets-encryptor/test/tempfile"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"math/rand"
@@ -31,17 +32,16 @@ func TestShouldCreateKeyFiles(t *testing.T) {
 }
 
 func TestShouldNotCreateKeyFilesToAvoidOverwritingPrivateKey(t *testing.T) {
-	tempFile, err := ioutil.TempFile("./", "tmp-private.*.key")
-	tempFile.Close()
-	assert.Nil(t, err)
+	tmpFile := tempfile.Create("./", "tmp-private.*.key", "")
+	defer tmpFile.Remove()
 
 	args := GenerateRSAArgs{
-		PrivateKeyFilename: tempFile.Name(),
+		PrivateKeyFilename: tmpFile.Name,
 		PublicKeyFilename:  fmt.Sprintf("tmp-public.%v.pem", rand.Int()),
 		KeySize:            512,
 	}
 
-	err = GenerateRSA(args)
+	err := GenerateRSA(args)
 	assert.NotNil(t, err)
 
 	tearDown(args)

@@ -3,6 +3,7 @@ package decrypt
 import (
 	"fmt"
 	generate_keys "github.com/dimw/simple-secrets-encryptor/cmd/generate-keys"
+	"github.com/dimw/simple-secrets-encryptor/test/tempfile"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"math/rand"
@@ -12,8 +13,8 @@ import (
 
 func TestShouldDecrypt(t *testing.T) {
 	tmpDir, _ := ioutil.TempDir("./", "tmp-secrets-*")
-	tmpFile, _ := ioutil.TempFile(tmpDir, "foo.*.yml")
-	_ = tmpFile.Close()
+	defer os.RemoveAll(tmpDir)
+	_ = tempfile.Create(tmpDir, "foo.*.yml", "")
 
 	generateRsaArgs := generate_keys.GenerateRSAArgs{
 		PrivateKeyFilename: fmt.Sprintf("private.%v.key", rand.Int()),
@@ -33,6 +34,13 @@ func TestShouldDecrypt(t *testing.T) {
 
 	err = Decrypt(args)
 	assert.Nil(t, err)
+}
 
-	_ = os.RemoveAll(tmpDir)
+func TestShouldFailDueToMissingPublicKey(t *testing.T) {
+	args := Args{
+		PrivateKeyFilename: "",
+	}
+
+	err := Decrypt(args)
+	assert.NotNil(t, err)
 }
