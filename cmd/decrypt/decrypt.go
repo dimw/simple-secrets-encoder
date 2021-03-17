@@ -10,6 +10,7 @@ type Args struct {
 	PrivateKeyFilename string
 	Workdir            string
 	FilenamePattern    string
+	Outdir             string
 }
 
 func Decrypt(args Args) error {
@@ -20,7 +21,7 @@ func Decrypt(args Args) error {
 
 	provider := crypto.CreateDecryptionProvider(privateKey)
 
-	err = fileutils.IterateFiles(args.Workdir, args.FilenamePattern, provider)
+	err = fileutils.IterateFiles(args.Workdir, args.FilenamePattern, args.Outdir, provider)
 	if err != nil {
 		return err
 	}

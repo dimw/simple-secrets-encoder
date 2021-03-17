@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 )
 
@@ -40,6 +41,11 @@ func Write(filename string, data map[string]interface{}) error {
 		return fmt.Errorf("could not marshal data")
 	}
 
+	outputDir := filepath.Dir(filename)
+	err = os.MkdirAll(outputDir, 0770)
+	if err != nil {
+		return fmt.Errorf("cannot create output folder(s): %v", outputDir)
+	}
 	err = ioutil.WriteFile(filename, bytes, 0644)
 	if err != nil {
 		return fmt.Errorf("cannot write to file: %v", filename)

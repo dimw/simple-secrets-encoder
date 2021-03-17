@@ -6,12 +6,21 @@ import (
 	"github.com/dimw/simple-secrets-encryptor/io"
 	"github.com/dimw/simple-secrets-encryptor/process"
 	"log"
+	"os"
+	"path/filepath"
 )
 
-func IterateFiles(workdir string, filenamePattern string, provider *crypto.Provider) error {
+func IterateFiles(workdir string, filenamePattern string, outdir string, provider *crypto.Provider) error {
 	files, err := Glob(workdir, filenamePattern)
 	if err != nil {
 		return err
+	}
+
+	validOutdir := outdir
+	if validOutdir == "" {
+		validOutdir = workdir
+	} else {
+		_ = os.Mkdir(outdir, os.ModeDir)
 	}
 
 	for _, filename := range files {
@@ -26,7 +35,8 @@ func IterateFiles(workdir string, filenamePattern string, provider *crypto.Provi
 			return err
 		}
 
-		err = io.Write(filename, encodedData)
+		outputFilename := filepath.ToSlash(validOutdir + "/" + filename[len(workdir)+1:])
+		err = io.Write(outputFilename, encodedData)
 		if err != nil {
 			return err
 		}

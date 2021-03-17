@@ -116,12 +116,12 @@ foo-token: bar
 Single-level key-value pairs can be encrypted and decrypted only. The secret files can be in the following formats: 
 
 - YAML
+- JSON
 
 ## Known Limitations
 - Only key-value maps without nesting are currently supported for encoding.
 - Use private key protected by a passphrase.
-- Add option for selecting a dedicated folder for output.
-- Add option for outputting to a different structured format (e.g. JSON). 
+- Add option for outputting to a different structured format (e.g. YAML to JSON). 
 
 [RSA]: https://en.wikipedia.org/wiki/RSA_(cryptosystem)
 [ssh-keygen]: https://www.ssh.com/ssh/keygen/

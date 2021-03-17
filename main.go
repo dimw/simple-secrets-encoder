@@ -11,6 +11,14 @@ import (
 )
 
 func main() {
+	const flagOutdir = "outdir"
+	const flagWorkdir = "workdir"
+	const flagFilenamePattern = "filename-pattern"
+	const flagPublicKeyFile = "public-key-file"
+	const flagPrivateKeyFile = "private-key-file"
+	const flagKeySize = "key-size"
+	const flagReplaceKeys = "replace-keys"
+
 	app := &cli.App{
 		Name:  "Simple Secret Encryptor",
 		Usage: "Tool for asymmetric encryption (RSA) of secrets",
@@ -20,28 +28,34 @@ func main() {
 				Name: "encrypt",
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:  "public-key-file",
+						Name:  flagPublicKeyFile,
 						Value: "public.pem",
 						Usage: "Location of the public key",
 					},
 					&cli.StringFlag{
-						Name:  "workdir",
+						Name:  flagWorkdir,
 						Value: "./",
-						Usage: "Location of YAML files to encode",
+						Usage: "Location of files to encrypt",
 					},
 					&cli.StringFlag{
-						Name:  "filename-pattern",
+						Name:  flagFilenamePattern,
 						Value: "**/*.{yml,yaml,json}",
 						Usage: "Glob pattern of files to include",
+					},
+					&cli.StringFlag{
+						Name:  flagOutdir,
+						Value: "",
+						Usage: "Output location for files (workdir)",
 					},
 				},
 				Aliases: []string{"e"},
 				Usage:   "Encrypt secrets",
 				Action: func(c *cli.Context) error {
 					args := encrypt.Args{
-						PublicKeyFilename: c.String("public-key-file"),
-						Workdir:           c.String("workdir"),
-						FilenamePattern:   c.String("filename-pattern"),
+						PublicKeyFilename: c.String(flagPublicKeyFile),
+						Workdir:           c.String(flagWorkdir),
+						FilenamePattern:   c.String(flagFilenamePattern),
+						Outdir:            c.String(flagOutdir),
 					}
 					return encrypt.Encrypt(args)
 				},
@@ -51,28 +65,34 @@ func main() {
 				Name: "decrypt",
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:  "private-key-file",
+						Name:  flagPrivateKeyFile,
 						Value: "private.key",
 						Usage: "Location of the private key",
 					},
 					&cli.StringFlag{
-						Name:  "workdir",
+						Name:  flagWorkdir,
 						Value: "./",
-						Usage: "Location of YAML files to decode",
+						Usage: "Location files to decrypt",
 					},
 					&cli.StringFlag{
-						Name:  "filename-pattern",
+						Name:  flagFilenamePattern,
 						Value: "**/*.{yml,yaml,json}.enc",
 						Usage: "Glob pattern of files to include",
+					},
+					&cli.StringFlag{
+						Name:  flagOutdir,
+						Value: "",
+						Usage: "Output location for files (workdir)",
 					},
 				},
 				Aliases: []string{"d"},
 				Usage:   "Decrypt secrets",
 				Action: func(c *cli.Context) error {
 					args := decrypt.Args{
-						PrivateKeyFilename: c.String("private-key-file"),
-						Workdir:            c.String("workdir"),
-						FilenamePattern:    c.String("filename-pattern"),
+						PrivateKeyFilename: c.String(flagPrivateKeyFile),
+						Workdir:            c.String(flagWorkdir),
+						FilenamePattern:    c.String(flagFilenamePattern),
+						Outdir:             c.String(flagOutdir),
 					}
 					return decrypt.Decrypt(args)
 				},
@@ -82,22 +102,22 @@ func main() {
 				Name: "generate-keys",
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:  "private-key-file",
+						Name:  flagPrivateKeyFile,
 						Value: "private.key",
 						Usage: "Location of the private key",
 					},
 					&cli.StringFlag{
-						Name:  "public-key-file",
+						Name:  flagPublicKeyFile,
 						Value: "public.pem",
 						Usage: "Location of the public key",
 					},
 					&cli.IntFlag{
-						Name:  "key-size",
+						Name:  flagKeySize,
 						Value: 2048,
 						Usage: "Key size",
 					},
 					&cli.BoolFlag{
-						Name:  "replace-keys",
+						Name:  flagReplaceKeys,
 						Usage: "Replace already existing private and public key files",
 					},
 				},
@@ -105,10 +125,10 @@ func main() {
 				Usage:   "Generate a pair of RSA keys",
 				Action: func(c *cli.Context) error {
 					args := generate_keys.GenerateRSAArgs{
-						PrivateKeyFilename: c.String("private-key-file"),
-						PublicKeyFilename:  c.String("public-key-file"),
-						KeySize:            c.Int("key-size"),
-						ReplaceKeys:        c.Bool("replace-keys"),
+						PrivateKeyFilename: c.String(flagPrivateKeyFile),
+						PublicKeyFilename:  c.String(flagPublicKeyFile),
+						KeySize:            c.Int(flagKeySize),
+						ReplaceKeys:        c.Bool(flagReplaceKeys),
 					}
 					return generate_keys.GenerateRSA(args)
 				},

@@ -3,6 +3,8 @@ package io
 import (
 	"github.com/dimw/simple-secrets-encryptor/test/tempfile"
 	"github.com/stretchr/testify/assert"
+	"io/ioutil"
+	"strings"
 	"testing"
 )
 
@@ -76,13 +78,18 @@ func TestShouldWriteFileFormat(t *testing.T) {
 	}
 }
 
-func TestShouldFailDueToMissignFolder(t *testing.T) {
+func TestShouldCreateSubFolders(t *testing.T) {
 	tmpFile := tempfile.Create("./", "foo.*.yaml", "foo: bar")
 	defer tmpFile.Remove()
 
 	data := make(map[string]interface{})
 	data["foo"] = "bar"
 
-	err := Write("booh/"+tmpFile.Name, data)
-	assert.NotNil(t, err)
+	filename := "booh/" + tmpFile.Name
+	err := Write(filename, data)
+	assert.Nil(t, err)
+
+	contentBytes, err := ioutil.ReadFile(filename)
+	assert.Nil(t, err)
+	assert.Equal(t, "foo: bar", strings.TrimSpace(string(contentBytes)))
 }
