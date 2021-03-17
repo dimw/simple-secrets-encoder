@@ -18,6 +18,7 @@ func main() {
 	const flagPrivateKeyFile = "private-key-file"
 	const flagKeySize = "key-size"
 	const flagReplaceKeys = "replace-keys"
+	const flagOutputFormat = "output-format"
 
 	app := &cli.App{
 		Name:  "Simple Secret Encryptor",
@@ -47,6 +48,11 @@ func main() {
 						Value: "",
 						Usage: "Output location for files (workdir)",
 					},
+					&cli.StringFlag{
+						Name:  flagOutputFormat,
+						Value: "",
+						Usage: "Output format: yaml, json (default: same as input file)",
+					},
 				},
 				Aliases: []string{"e"},
 				Usage:   "Encrypt secrets",
@@ -56,6 +62,7 @@ func main() {
 						Workdir:           c.String(flagWorkdir),
 						FilenamePattern:   c.String(flagFilenamePattern),
 						Outdir:            c.String(flagOutdir),
+						OutputFormat:      c.String(flagOutputFormat),
 					}
 					return encrypt.Encrypt(args)
 				},
@@ -84,6 +91,11 @@ func main() {
 						Value: "",
 						Usage: "Output location for files (workdir)",
 					},
+					&cli.StringFlag{
+						Name:  flagOutputFormat,
+						Value: "",
+						Usage: "Output format: yaml, json (default: same as input file)",
+					},
 				},
 				Aliases: []string{"d"},
 				Usage:   "Decrypt secrets",
@@ -93,6 +105,7 @@ func main() {
 						Workdir:            c.String(flagWorkdir),
 						FilenamePattern:    c.String(flagFilenamePattern),
 						Outdir:             c.String(flagOutdir),
+						OutputFormat:       c.String(flagOutputFormat),
 					}
 					return decrypt.Decrypt(args)
 				},

@@ -10,16 +10,17 @@ import (
 	"path/filepath"
 )
 
-func IterateFiles(workdir string, filenamePattern string, outdir string, provider *crypto.Provider) error {
+func IterateFiles(workdir string, filenamePattern string, outdir string, format string, provider *crypto.Provider) error {
+	workdir = filepath.Clean(workdir)
 	files, err := Glob(workdir, filenamePattern)
 	if err != nil {
 		return err
 	}
 
-	validOutdir := outdir
-	if validOutdir == "" {
-		validOutdir = workdir
+	if outdir == "" {
+		outdir = workdir
 	} else {
+		outdir = filepath.Clean(outdir)
 		_ = os.Mkdir(outdir, os.ModeDir)
 	}
 
@@ -35,11 +36,24 @@ func IterateFiles(workdir string, filenamePattern string, outdir string, provide
 			return err
 		}
 
-		outputFilename := filepath.ToSlash(validOutdir + "/" + filename[len(workdir)+1:])
+		outputFilename := updateOutdir(workdir, outdir, filename)
+		outputFilename = updateFilename(outputFilename, format)
 		err = io.Write(outputFilename, encodedData)
 		if err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func updateOutdir(workdir string, outdir string, filename string) string {
+	return filepath.ToSlash(outdir + "/" + filename[len(workdir)+1:])
+}
+
+func updateFilename(filename string, format string) string {
+	if format != "" {
+		filename = filename[0:len(filename)-len(filepath.Ext(filename))] + "." + format
+	}
+
+	return filename
 }

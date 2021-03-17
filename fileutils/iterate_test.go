@@ -20,7 +20,7 @@ func TestShouldIterate(t *testing.T) {
 	defer os.RemoveAll(tmpDir)
 	_ = tempfile.Create(tmpDir2, "foo.*.yml", "")
 
-	err := IterateFiles(tmpDir, "*.yml", "", nil)
+	err := IterateFiles(tmpDir, "*.yml", "", "", nil)
 	assert.Nil(t, err)
 }
 
@@ -38,7 +38,7 @@ func TestShouldOutputToOutdir(t *testing.T) {
 	defer os.RemoveAll(outdir)
 
 	privateKey, _ := rsa.GenerateKey(crypto_rand.Reader, 2048)
-	err := IterateFiles(tmpDir, "*.yml", outdir, crypto.CreateEncryptionProvider(&privateKey.PublicKey))
+	err := IterateFiles(tmpDir, "*.yml", outdir, "", crypto.CreateEncryptionProvider(&privateKey.PublicKey))
 	assert.Nil(t, err)
 
 	outputFilename := tmpDir2 + "/" + filepath.Base(tmpFile.Name)
@@ -53,7 +53,7 @@ func TestShouldCreateOutdir(t *testing.T) {
 	defer os.RemoveAll(tmpOutDir)
 	_ = tempfile.Create(tmpDir, "foo.*.yml", "")
 
-	err := IterateFiles(tmpDir, "*.yml", tmpOutDir, nil)
+	err := IterateFiles(tmpDir, "*.yml", tmpOutDir, "", nil)
 	assert.Nil(t, err)
 
 	_, err = os.Stat(tmpOutDir)
@@ -67,9 +67,51 @@ func TestShouldIgnoreOutdirCreationIfExists(t *testing.T) {
 	defer os.RemoveAll(tmpOutDir)
 	_ = tempfile.Create(tmpDir, "foo.*.yml", "")
 
-	err := IterateFiles(tmpDir, "*.yml", tmpOutDir, nil)
+	err := IterateFiles(tmpDir, "*.yml", tmpOutDir, "", nil)
 	assert.Nil(t, err)
 
 	_, err = os.Stat(tmpOutDir)
 	assert.Nil(t, err)
+}
+
+func TestShouldChangeFilename(t *testing.T) {
+	tests := []struct {
+		name     string
+		filename string
+		format   string
+		out      string
+	}{
+		{name: "Should replace ext", filename: "foo/bar/test.yml", format: "", out: "foo/bar/test.yml"},
+		{name: "Should replace ext", filename: "foo/bar/test.yml", format: "json", out: "foo/bar/test.json"},
+		{name: "Should replace ext", filename: "test.yml", format: "json", out: "test.json"},
+		{name: "Should replace ext", filename: "test.json", format: "yaml", out: "test.yaml"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			filename := updateFilename(tt.filename, tt.format)
+
+			assert.Equal(t, tt.out, filename)
+		})
+	}
+}
+
+func TestShouldChangeFilepathToOutdir(t *testing.T) {
+	tests := []struct {
+		name     string
+		workdir  string
+		outdir   string
+		filename string
+		out      string
+	}{
+		{name: "Should replace ext", workdir: "tmp", outdir: "tmp-out", filename: "tmp/bar/test.yml", out: "tmp-out/bar/test.yml"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			filename := updateOutdir(tt.workdir, tt.outdir, tt.filename)
+
+			assert.Equal(t, tt.out, filename)
+		})
+	}
 }

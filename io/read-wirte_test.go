@@ -4,6 +4,7 @@ import (
 	"github.com/dimw/simple-secrets-encryptor/test/tempfile"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
+	"os"
 	"strings"
 	"testing"
 )
@@ -86,6 +87,7 @@ func TestShouldCreateSubFolders(t *testing.T) {
 	data["foo"] = "bar"
 
 	filename := "booh/" + tmpFile.Name
+	defer os.Remove(filename)
 	err := Write(filename, data)
 	assert.Nil(t, err)
 

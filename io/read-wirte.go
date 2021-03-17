@@ -32,7 +32,7 @@ func Write(filename string, data map[string]interface{}) error {
 	case ".yml", ".yaml":
 		bytes, err = yaml.Marshal(data)
 	case ".json":
-		bytes, err = json.Marshal(data)
+		bytes, err = json.MarshalIndent(data, "", "  ")
 	default:
 		return fmt.Errorf("unsupported file extension: %v", filename)
 	}
@@ -46,6 +46,7 @@ func Write(filename string, data map[string]interface{}) error {
 	if err != nil {
 		return fmt.Errorf("cannot create output folder(s): %v", outputDir)
 	}
+
 	err = ioutil.WriteFile(filename, bytes, 0644)
 	if err != nil {
 		return fmt.Errorf("cannot write to file: %v", filename)

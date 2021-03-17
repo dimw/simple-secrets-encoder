@@ -11,6 +11,7 @@ type Args struct {
 	Workdir           string
 	FilenamePattern   string
 	Outdir            string
+	OutputFormat      string
 }
 
 func Encrypt(args Args) error {
@@ -21,7 +22,7 @@ func Encrypt(args Args) error {
 
 	provider := crypto.CreateEncryptionProvider(publicKey)
 
-	err = fileutils.IterateFiles(args.Workdir, args.FilenamePattern, args.Outdir, provider)
+	err = fileutils.IterateFiles(args.Workdir, args.FilenamePattern, args.Outdir, args.OutputFormat, provider)
 	if err != nil {
 		return err
 	}
