@@ -23,6 +23,7 @@ func TestShouldReadFileFormat(t *testing.T) {
 	}{
 		{name: "Should read .yaml", filename: "foo.*.yaml", content: "foo: bar"},
 		{name: "Should read .yml", filename: "foo.*.yml", content: "foo: bar"},
+		{name: "Should read .json", filename: "foo.*.json", content: `{"foo": "bar"}`},
 	}
 
 	for _, tt := range tests {
@@ -49,7 +50,7 @@ func TestShouldNotWriteUnsupportedFileFormat(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
-func TestShouldWriteYamlFileFormat(t *testing.T) {
+func TestShouldWriteFileFormat(t *testing.T) {
 	tests := []struct {
 		name            string
 		filename        string
@@ -57,6 +58,7 @@ func TestShouldWriteYamlFileFormat(t *testing.T) {
 	}{
 		{name: "Should write to .yaml", filename: "foo.*.yaml", expectedContent: "foo: bar"},
 		{name: "Should write to .yml", filename: "foo.*.yml", expectedContent: "foo: bar"},
+		{name: "Should write to .json", filename: "foo.*.json", expectedContent: `{"foo":"bar"}`},
 	}
 
 	for _, tt := range tests {

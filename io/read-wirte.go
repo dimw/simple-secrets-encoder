@@ -1,6 +1,7 @@
 package io
 
 import (
+	"encoding/json"
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -14,6 +15,8 @@ func Read(filename string) (map[string]interface{}, error) {
 	switch filepath.Ext(filename) {
 	case ".yml", ".yaml":
 		err = yaml.Unmarshal(fileData, &data)
+	case ".json":
+		err = json.Unmarshal(fileData, &data)
 	default:
 		err = fmt.Errorf("unsupported file extension: %v", filename)
 	}
@@ -27,6 +30,8 @@ func Write(filename string, data map[string]interface{}) error {
 	switch filepath.Ext(filename) {
 	case ".yml", ".yaml":
 		bytes, err = yaml.Marshal(data)
+	case ".json":
+		bytes, err = json.Marshal(data)
 	default:
 		return fmt.Errorf("unsupported file extension: %v", filename)
 	}

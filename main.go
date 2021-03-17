@@ -31,7 +31,7 @@ func main() {
 					},
 					&cli.StringFlag{
 						Name:  "filename-pattern",
-						Value: "**/*.{yml,yaml}",
+						Value: "**/*.{yml,yaml,json}",
 						Usage: "Glob pattern of files to include",
 					},
 				},
@@ -62,7 +62,7 @@ func main() {
 					},
 					&cli.StringFlag{
 						Name:  "filename-pattern",
-						Value: "**/*.{yml,yaml}.enc",
+						Value: "**/*.{yml,yaml,json}.enc",
 						Usage: "Glob pattern of files to include",
 					},
 				},
