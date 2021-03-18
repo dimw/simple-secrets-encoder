@@ -21,7 +21,7 @@ func IterateFiles(workdir string, filenamePattern string, outdir string, format 
 		outdir = workdir
 	} else {
 		outdir = filepath.Clean(outdir)
-		_ = os.Mkdir(outdir, os.ModeDir)
+		_ = os.Mkdir(outdir, 0770)
 	}
 
 	for _, filename := range files {

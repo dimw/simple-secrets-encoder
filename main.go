@@ -83,7 +83,7 @@ func main() {
 					},
 					&cli.StringFlag{
 						Name:  flagFilenamePattern,
-						Value: "**/*.{yml,yaml,json}.enc",
+						Value: "**/*.{yml,yaml,json}",
 						Usage: "Glob pattern of files to include",
 					},
 					&cli.StringFlag{
