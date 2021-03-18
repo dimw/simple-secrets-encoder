@@ -2,7 +2,7 @@ package generate_keys
 
 import (
 	"fmt"
-	"github.com/dimw/simple-secrets-encryptor/test/tempfile"
+	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"math/rand"

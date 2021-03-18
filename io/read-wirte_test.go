@@ -1,7 +1,7 @@
 package io
 
 import (
-	"github.com/dimw/simple-secrets-encryptor/test/tempfile"
+	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
