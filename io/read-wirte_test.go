@@ -10,7 +10,7 @@ import (
 )
 
 func TestShouldNotReadUnsupportedFileFormat(t *testing.T) {
-	tmpFile := tempfile.Create("./", "foo.*.txt", "")
+	tmpFile := tempfile.New("./", "foo.*.txt", "")
 	defer tmpFile.Remove()
 
 	_, err := Read(tmpFile.Name)
@@ -31,7 +31,7 @@ func TestShouldReadFileFormat(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tmpFile := tempfile.Create("./", tt.filename, tt.content)
+			tmpFile := tempfile.New("./", tt.filename, tt.content)
 			defer tmpFile.Remove()
 
 			data, err := Read(tmpFile.Name)
@@ -43,7 +43,7 @@ func TestShouldReadFileFormat(t *testing.T) {
 }
 
 func TestShouldNotWriteUnsupportedFileFormat(t *testing.T) {
-	tmpFile := tempfile.Create("./", "foo.*.txt", "boo")
+	tmpFile := tempfile.New("./", "foo.*.txt", "boo")
 	defer tmpFile.Remove()
 
 	data := make(map[string]interface{})
@@ -66,7 +66,7 @@ func TestShouldWriteFileFormat(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tmpFile := tempfile.Create("./", tt.filename, "")
+			tmpFile := tempfile.New("./", tt.filename, "")
 			defer tmpFile.Remove()
 
 			data := make(map[string]interface{})
@@ -80,7 +80,7 @@ func TestShouldWriteFileFormat(t *testing.T) {
 }
 
 func TestShouldCreateSubFolders(t *testing.T) {
-	tmpFile := tempfile.Create("./", "foo.*.yaml", "foo: bar")
+	tmpFile := tempfile.New("./", "foo.*.yaml", "foo: bar")
 	defer tmpFile.Remove()
 
 	data := make(map[string]interface{})

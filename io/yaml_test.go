@@ -10,7 +10,7 @@ import (
 )
 
 func TestReadYaml(t *testing.T) {
-	tmpYmlFile := tempfile.Create("./", "foo.*.yml", "foo: bar")
+	tmpYmlFile := tempfile.New("./", "foo.*.yml", "foo: bar")
 	defer tmpYmlFile.Remove()
 
 	yaml, err := ReadYaml(tmpYmlFile.Name)
@@ -20,7 +20,7 @@ func TestReadYaml(t *testing.T) {
 }
 
 func TestWriteYaml(t *testing.T) {
-	tmpYmlFile := tempfile.Create("./", "foo.*.yml", "")
+	tmpYmlFile := tempfile.New("./", "foo.*.yml", "")
 	defer tmpYmlFile.Remove()
 
 	data := make(map[string]interface{})

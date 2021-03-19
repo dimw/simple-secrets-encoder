@@ -4,13 +4,14 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"testing"
 )
 
 type TempFile struct {
 	Name string
 }
 
-func Create(dir string, pattern string, content string) *TempFile {
+func New(dir string, pattern string, content string) *TempFile {
 	tmpFile, _ := ioutil.TempFile(dir, pattern)
 	_, _ = tmpFile.WriteString(content)
 	_ = tmpFile.Close()
@@ -18,6 +19,20 @@ func Create(dir string, pattern string, content string) *TempFile {
 	return &TempFile{
 		Name: tmpFile.Name(),
 	}
+}
+
+func NewT(t *testing.T, dir string, pattern string, content string) *TempFile {
+	tmp, _ := ioutil.TempFile(dir, pattern)
+	_, _ = tmp.WriteString(content)
+	_ = tmp.Close()
+
+	tempFile := &TempFile{
+		Name: tmp.Name(),
+	}
+
+	t.Cleanup(tempFile.Remove)
+
+	return tempFile
 }
 
 func (tf *TempFile) Remove() {

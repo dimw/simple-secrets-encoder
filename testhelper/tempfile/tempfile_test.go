@@ -8,8 +8,7 @@ import (
 )
 
 func TestCreate(t *testing.T) {
-	tmpFile := Create("./", "foo.*.txt", "bar")
-	defer tmpFile.Remove()
+	tmpFile := NewT(t, "./", "foo.*.txt", "bar")
 
 	assert.Regexp(t, regexp.MustCompile(`foo\.\d*\.txt`), tmpFile.Name)
 	data, err := ioutil.ReadFile(tmpFile.Name)

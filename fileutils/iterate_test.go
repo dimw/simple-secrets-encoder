@@ -18,7 +18,7 @@ func TestShouldIterate(t *testing.T) {
 	tmpDir, _ := ioutil.TempDir("./", "tmp-*")
 	tmpDir2, _ := ioutil.TempDir(tmpDir, "tmp2-*")
 	defer os.RemoveAll(tmpDir)
-	_ = tempfile.Create(tmpDir2, "foo.*.yml", "")
+	_ = tempfile.New(tmpDir2, "foo.*.yml", "")
 
 	err := IterateFiles(tmpDir, "*.yml", "", "", nil)
 	assert.Nil(t, err)
@@ -30,7 +30,7 @@ func TestShouldOutputToOutdir(t *testing.T) {
 	defer os.RemoveAll(tmpDir)
 	tmpDir2, _ := ioutil.TempDir(tmpDir, "subdir-*")
 	defer os.RemoveAll(tmpDir2)
-	tmpFile := tempfile.Create(tmpDir2, "foo.*.yml", "foo-secret: bar")
+	tmpFile := tempfile.New(tmpDir2, "foo.*.yml", "foo-secret: bar")
 	defer tmpFile.Remove()
 
 	// define output folder
@@ -51,7 +51,7 @@ func TestShouldCreateOutdir(t *testing.T) {
 	defer os.RemoveAll(tmpDir)
 	tmpOutDir := fmt.Sprintf("tmp-out-%v", rand.Int())
 	defer os.RemoveAll(tmpOutDir)
-	_ = tempfile.Create(tmpDir, "foo.*.yml", "")
+	_ = tempfile.New(tmpDir, "foo.*.yml", "")
 
 	err := IterateFiles(tmpDir, "*.yml", tmpOutDir, "", nil)
 	assert.Nil(t, err)
@@ -65,7 +65,7 @@ func TestShouldIgnoreOutdirCreationIfExists(t *testing.T) {
 	defer os.RemoveAll(tmpDir)
 	tmpOutDir, _ := ioutil.TempDir("./", "tmp-out-*")
 	defer os.RemoveAll(tmpOutDir)
-	_ = tempfile.Create(tmpDir, "foo.*.yml", "")
+	_ = tempfile.New(tmpDir, "foo.*.yml", "")
 
 	err := IterateFiles(tmpDir, "*.yml", tmpOutDir, "", nil)
 	assert.Nil(t, err)
