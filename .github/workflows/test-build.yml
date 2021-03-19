@@ -10,7 +10,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: bin
-          path: build/sse
+          path: bin/
 
       - uses: actions/cache@v2
         with:
@@ -31,4 +31,4 @@ jobs:
         run: |
           go get -d -v
           go install -v
-          go build -o build/sse
+          go build -o bin/sse
