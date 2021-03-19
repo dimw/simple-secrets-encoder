@@ -14,7 +14,7 @@ import (
 func TestShouldDecrypt(t *testing.T) {
 	tmpDir, _ := ioutil.TempDir("./", "tmp-secrets-*")
 	defer os.RemoveAll(tmpDir)
-	_ = tempfile.New(tmpDir, "foo.*.yml", "")
+	_ = tempfile.NewT(t, tmpDir, "foo.*.yml", "")
 
 	generateRsaArgs := generate_keys.GenerateRSAArgs{
 		PrivateKeyFilename: fmt.Sprintf("private.%v.key", rand.Int()),

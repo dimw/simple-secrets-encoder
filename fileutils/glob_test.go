@@ -11,8 +11,8 @@ import (
 func TestGlob(t *testing.T) {
 	tmpDir, _ := ioutil.TempDir("./", "tmp-*")
 	defer os.RemoveAll(tmpDir)
-	tmpYmlFile := tempfile.New(tmpDir, "foo.*.yml", "")
-	_ = tempfile.New(tmpDir, "bar.*.txt", "")
+	tmpYmlFile := tempfile.NewT(t, tmpDir, "foo.*.yml", "")
+	_ = tempfile.NewT(t, tmpDir, "bar.*.txt", "")
 
 	files, err := Glob(tmpDir, "**/*.{yml,yaml}")
 	assert.Nil(t, err)

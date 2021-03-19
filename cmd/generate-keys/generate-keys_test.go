@@ -32,8 +32,7 @@ func TestShouldCreateKeyFiles(t *testing.T) {
 }
 
 func TestShouldNotCreateKeyFilesToAvoidOverwritingPrivateKey(t *testing.T) {
-	tmpFile := tempfile.New("./", "tmp-private.*.key", "")
-	defer tmpFile.Remove()
+	tmpFile := tempfile.NewT(t, "./", "tmp-private.*.key", "")
 
 	args := GenerateRSAArgs{
 		PrivateKeyFilename: tmpFile.Name,

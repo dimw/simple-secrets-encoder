@@ -22,13 +22,7 @@ func New(dir string, pattern string, content string) *TempFile {
 }
 
 func NewT(t *testing.T, dir string, pattern string, content string) *TempFile {
-	tmp, _ := ioutil.TempFile(dir, pattern)
-	_, _ = tmp.WriteString(content)
-	_ = tmp.Close()
-
-	tempFile := &TempFile{
-		Name: tmp.Name(),
-	}
+	tempFile := New(dir, pattern, content)
 
 	t.Cleanup(tempFile.Remove)
 
