@@ -121,7 +121,6 @@ Single-level key-value pairs can be encrypted and decrypted only. The secret fil
 ## Known Limitations
 - Only key-value maps without nesting are currently supported for encoding.
 - Use private key protected by a passphrase.
-- Add option for outputting to a different structured format (e.g. YAML to JSON). 
 
 [RSA]: https://en.wikipedia.org/wiki/RSA_(cryptosystem)
 [ssh-keygen]: https://www.ssh.com/ssh/keygen/
