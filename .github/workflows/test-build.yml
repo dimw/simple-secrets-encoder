@@ -32,3 +32,6 @@ jobs:
           go get -d -v
           go install -v
           go build -o bin/sse
+          pwd
+          ls -l bin/
+          ls -l ${{ github.workspace }}
