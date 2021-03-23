@@ -26,9 +26,9 @@ jobs:
         run: |
           go get -d -v
           go install -v
-          go build -o bin/sse
+          GOOS=linux GOARCH=amd64 go build -o bin/sse
 
       - uses: actions/upload-artifact@v2
         with:
-          name: bin
-          path: bin/
+          name: sse
+          path: bin/sse
