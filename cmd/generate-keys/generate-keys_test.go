@@ -20,7 +20,7 @@ func TestShouldCreateKeyFiles(t *testing.T) {
 	}
 
 	err := GenerateRSA(args)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	privateKey, err := ioutil.ReadFile(args.PrivateKeyFilename)
 	assert.Regexp(t, regexp.MustCompile("-----BEGIN RSA PRIVATE KEY-----\n[-A-Za-z0-9+=/\n]+\n-----END RSA PRIVATE KEY-----"), strings.TrimSpace(string(privateKey)))
@@ -49,7 +49,7 @@ func TestShouldNotCreateKeyFilesToAvoidOverwritingPrivateKey(t *testing.T) {
 func TestShouldNotCreateKeyFilesToAvoidOverwritingPublicKey(t *testing.T) {
 	tempFile, err := ioutil.TempFile("./", "tmp-private.*.pem")
 	tempFile.Close()
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	args := GenerateRSAArgs{
 		PrivateKeyFilename: fmt.Sprintf("tmp-private-%v.key", rand.Int()),

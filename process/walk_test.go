@@ -20,7 +20,7 @@ func TestEncryptDecryptSecrets(t *testing.T) {
 
 	got, err := Walk(data, encryptionProvider)
 
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	assert.Equal(t, "bar", got["foo"])
 	encodedStringRegexp := regexp.MustCompile(`ENC\[rsa,data:[-A-Za-z0-9+=/]+]`)

@@ -15,7 +15,7 @@ func TestReadYaml(t *testing.T) {
 
 	yaml, err := ReadYaml(tmpYmlFile.Name)
 
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, "bar", yaml["foo"])
 }
 
@@ -27,7 +27,7 @@ func TestWriteYaml(t *testing.T) {
 	data["foo"] = "bar"
 
 	err := WriteYaml(tmpYmlFile.Name, data)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	content, err := ioutil.ReadFile(tmpYmlFile.Name)
 

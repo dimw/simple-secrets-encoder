@@ -21,7 +21,7 @@ func TestShouldIterate(t *testing.T) {
 	_ = tempfile.NewT(t, tmpDir2, "foo.*.yml", "")
 
 	err := IterateFiles(tmpDir, "*.yml", "", "", nil)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 }
 
 func TestShouldOutputToOutdir(t *testing.T) {
@@ -38,11 +38,11 @@ func TestShouldOutputToOutdir(t *testing.T) {
 
 	privateKey, _ := rsa.GenerateKey(crypto_rand.Reader, 2048)
 	err := IterateFiles(tmpDir, "*.yml", outdir, "", crypto.CreateEncryptionProvider(&privateKey.PublicKey))
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	outputFilename := tmpDir2 + "/" + filepath.Base(tmpFile.Name)
 	_, err = os.Stat(outputFilename)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 }
 
 func TestShouldCreateOutdir(t *testing.T) {
@@ -53,10 +53,10 @@ func TestShouldCreateOutdir(t *testing.T) {
 	_ = tempfile.NewT(t, tmpDir, "foo.*.yml", "")
 
 	err := IterateFiles(tmpDir, "*.yml", tmpOutDir, "", nil)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	_, err = os.Stat(tmpOutDir)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 }
 
 func TestShouldIgnoreOutdirCreationIfExists(t *testing.T) {
@@ -67,10 +67,10 @@ func TestShouldIgnoreOutdirCreationIfExists(t *testing.T) {
 	_ = tempfile.NewT(t, tmpDir, "foo.*.yml", "")
 
 	err := IterateFiles(tmpDir, "*.yml", tmpOutDir, "", nil)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	_, err = os.Stat(tmpOutDir)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 }
 
 func TestShouldChangeFilename(t *testing.T) {

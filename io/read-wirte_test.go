@@ -35,7 +35,7 @@ func TestShouldReadFileFormat(t *testing.T) {
 			data, err := Read(tmpFile.Name)
 
 			assert.NotNil(t, data)
-			assert.Nil(t, err)
+			assert.NoError(t, err)
 		})
 	}
 }
@@ -69,7 +69,7 @@ func TestShouldWriteFileFormat(t *testing.T) {
 			data["foo"] = "bar"
 
 			err := Write(tmpFile.Name, data)
-			assert.Nil(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tt.expectedContent, tmpFile.Content())
 		})
 	}
@@ -84,9 +84,9 @@ func TestShouldCreateSubFolders(t *testing.T) {
 	filename := "booh/" + tmpFile.Name
 	defer os.Remove(filename)
 	err := Write(filename, data)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	contentBytes, err := ioutil.ReadFile(filename)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, "foo: bar", strings.TrimSpace(string(contentBytes)))
 }

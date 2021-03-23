@@ -15,7 +15,7 @@ func TestGlob(t *testing.T) {
 	_ = tempfile.NewT(t, tmpDir, "bar.*.txt", "")
 
 	files, err := Glob(tmpDir, "**/*.{yml,yaml}")
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	assert.Equal(t, 1, len(files))
 	assert.Equal(t, tmpYmlFile.Name, files[0])

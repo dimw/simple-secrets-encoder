@@ -17,7 +17,7 @@ func TestShouldLoadPrivateKey(t *testing.T) {
 	}
 
 	err := generate_keys.GenerateRSA(args)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	privateKey, _ := LoadPrivateKey(args.PrivateKeyFilename)
 	assert.Equal(t, 256, privateKey.Size())
@@ -34,7 +34,7 @@ func TestShouldLoadPublicKey(t *testing.T) {
 	}
 
 	err := generate_keys.GenerateRSA(args)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	publicKey, _ := LoadPublicKey(args.PublicKeyFilename)
 	assert.Equal(t, 256, publicKey.Size())

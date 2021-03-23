@@ -17,7 +17,7 @@ func TestEncrypt(t *testing.T) {
 	}
 
 	encryptedVal, err := provider.Encrypt("foo")
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	assert.Regexp(t, regexp.MustCompile(`ENC\[rsa,data:.+]`), encryptedVal)
 }
 
@@ -39,7 +39,7 @@ func TestEncryptShouldReturnOriginalValueIfAlreadyEncrypted(t *testing.T) {
 	}
 
 	val, err := provider.Encrypt("ENC[foo]")
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, "ENC[foo]", val)
 }
 
@@ -49,7 +49,7 @@ func TestDecryptShouldReturnUndecrypted(t *testing.T) {
 	}
 
 	val, err := provider.Decrypt("foo")
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	assert.Equal(t, "foo", val)
 }
 

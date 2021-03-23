@@ -25,7 +25,7 @@ func TestShouldEncrypt(t *testing.T) {
 	defer os.Remove(generateRsaArgs.PrivateKeyFilename)
 
 	err := generate_keys.GenerateRSA(generateRsaArgs)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 
 	args := Args{
 		PublicKeyFilename: generateRsaArgs.PublicKeyFilename,
@@ -34,7 +34,7 @@ func TestShouldEncrypt(t *testing.T) {
 	}
 
 	err = Encrypt(args)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 }
 
 func TestShouldFailDueToMissingPublicKey(t *testing.T) {
