@@ -33,6 +33,7 @@ func TestEncryptDecryptSecrets(t *testing.T) {
 
 	decryptionProvider := crypto.CreateDecryptionProvider(privateKey)
 	got, err = Walk(got, decryptionProvider)
+	assert.NoError(t, err)
 	assert.Equal(t, "bar", got["foo"])
 	assert.Equal(t, "secret-bar", got["foo-secret"])
 	assert.Equal(t, "token-bar", got["fooToken"])

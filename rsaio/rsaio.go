@@ -4,9 +4,16 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"io/ioutil"
 )
+
+var errEncryptedPEMBlockNotSupported = errors.New("encrypted PEM blocks are not supported")
+
+func EncryptedPEMBlockNotSupportedError() error {
+	return fmt.Errorf("%w", errEncryptedPEMBlockNotSupported)
+}
 
 func LoadPublicKey(filename string) (*rsa.PublicKey, error) {
 	data, err := ioutil.ReadFile(filename)
@@ -30,7 +37,7 @@ func LoadPrivateKey(filename string) (*rsa.PrivateKey, error) {
 	p, _ := pem.Decode(data)
 
 	if x509.IsEncryptedPEMBlock(p) {
-		return nil, fmt.Errorf("encrypted PEM blocks are not supported")
+		return nil, EncryptedPEMBlockNotSupportedError()
 	}
 
 	key, err := x509.ParsePKCS1PrivateKey(p.Bytes)

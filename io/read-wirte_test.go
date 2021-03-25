@@ -1,10 +1,11 @@
 package io
 
 import (
-	"github.com/dimw/simple-secrets-encryptor/testhelper/ossafe"
 	"io/ioutil"
 	"strings"
 	"testing"
+
+	"github.com/dimw/simple-secrets-encryptor/testhelper/ossafe"
 
 	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
 	"github.com/stretchr/testify/assert"

@@ -24,9 +24,11 @@ func TestShouldCreateKeyFiles(t *testing.T) {
 	assert.NoError(t, err)
 
 	privateKey, err := ioutil.ReadFile(args.PrivateKeyFilename)
+	assert.NoError(t, err)
 	assert.Regexp(t, regexp.MustCompile("-----BEGIN RSA PRIVATE KEY-----\n[-A-Za-z0-9+=/\n]+\n-----END RSA PRIVATE KEY-----"), strings.TrimSpace(string(privateKey)))
 
 	publicKey, err := ioutil.ReadFile(args.PublicKeyFilename)
+	assert.NoError(t, err)
 	assert.Regexp(t, regexp.MustCompile("-----BEGIN RSA PUBLIC KEY-----\n[-A-Za-z0-9+=/\n]+\n-----END RSA PUBLIC KEY-----"), strings.TrimSpace(string(publicKey)))
 
 	tearDown(args)

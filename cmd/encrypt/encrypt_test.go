@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
-	"os"
 	"testing"
+
+	"github.com/dimw/simple-secrets-encryptor/testhelper/ossafe"
 
 	generate_keys "github.com/dimw/simple-secrets-encryptor/cmd/generate-keys"
 	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
@@ -14,7 +15,7 @@ import (
 
 func TestShouldEncrypt(t *testing.T) {
 	tmpDir, _ := ioutil.TempDir("./", "tmp-secrets-*")
-	defer os.RemoveAll(tmpDir)
+	defer ossafe.RemoveAll(tmpDir)
 	_ = tempfile.NewT(t, tmpDir, "foo.*.yml", "")
 
 	generateRsaArgs := generate_keys.GenerateRSAArgs{
@@ -22,8 +23,8 @@ func TestShouldEncrypt(t *testing.T) {
 		PublicKeyFilename:  fmt.Sprintf("public.%v.pem", rand.Int()),
 		KeySize:            2048,
 	}
-	defer os.Remove(generateRsaArgs.PublicKeyFilename)
-	defer os.Remove(generateRsaArgs.PrivateKeyFilename)
+	defer ossafe.Remove(generateRsaArgs.PublicKeyFilename)
+	defer ossafe.Remove(generateRsaArgs.PrivateKeyFilename)
 
 	err := generate_keys.GenerateRSA(generateRsaArgs)
 	assert.NoError(t, err)

@@ -37,6 +37,9 @@ func FileCreationError(path string) error {
 
 func Read(filename string) (map[string]interface{}, error) {
 	fileData, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
 	data := make(map[string]interface{})
 
 	switch filepath.Ext(filename) {

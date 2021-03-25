@@ -1,11 +1,24 @@
 package process
 
 import (
+	"errors"
 	"fmt"
 	"log"
 
 	"github.com/dimw/simple-secrets-encryptor/crypto"
 )
+
+var errUnsupportedKeyType = errors.New("unsupportedKeyTypeError")
+
+func UnsupportedKeyTypeError(keyType interface{}) error {
+	return fmt.Errorf(`%w: "%v"`, errUnsupportedKeyType, keyType)
+}
+
+var errUnknownStrategy = errors.New("unknownStrategyError")
+
+func UnknownStrategyError(strategy string) error {
+	return fmt.Errorf(`%w: "%v"`, errUnknownStrategy, strategy)
+}
 
 func Walk(data map[string]interface{}, encryptionProvider *crypto.Provider) (map[string]interface{}, error) {
 	processedData := make(map[string]interface{})
@@ -22,10 +35,10 @@ func Walk(data map[string]interface{}, encryptionProvider *crypto.Provider) (map
 				case "decrypt":
 					processedData[key], err = encryptionProvider.Decrypt(val.(string))
 				default:
-					return nil, fmt.Errorf(`unknown strategy "%v"`, encryptionProvider.Strategy)
+					return nil, UnknownStrategyError(encryptionProvider.Strategy)
 				}
 			default:
-				return nil, fmt.Errorf(`unsupported type "%v"`, t)
+				return nil, UnsupportedKeyTypeError(t)
 			}
 
 			if err != nil {
