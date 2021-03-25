@@ -1,16 +1,18 @@
 package fileutils
 
 import (
+	"io/ioutil"
+	"testing"
+
+	"github.com/dimw/simple-secrets-encryptor/testhelper/ossafe"
+
 	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
 	"github.com/stretchr/testify/assert"
-	"io/ioutil"
-	"os"
-	"testing"
 )
 
 func TestGlob(t *testing.T) {
 	tmpDir, _ := ioutil.TempDir("./", "tmp-*")
-	defer os.RemoveAll(tmpDir)
+	defer ossafe.RemoveAll(tmpDir)
 	tmpYmlFile := tempfile.NewT(t, tmpDir, "foo.*.yml", "")
 	_ = tempfile.NewT(t, tmpDir, "bar.*.txt", "")
 

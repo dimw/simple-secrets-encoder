@@ -1,13 +1,18 @@
 package io
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
+
+	"gopkg.in/yaml.v2"
 )
 
 func ReadYaml(filename string) (map[string]interface{}, error) {
 	fileData, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Fatalf("Could not read file %v!", err)
+	}
+
 	data := make(map[string]interface{})
 
 	err = yaml.Unmarshal(fileData, &data)
@@ -21,7 +26,7 @@ func WriteYaml(filename string, data map[string]interface{}) error {
 		log.Fatalf("Could not marshal data %v!", data)
 	}
 
-	err = ioutil.WriteFile(filename, bytes, 0644)
+	err = ioutil.WriteFile(filename, bytes, 0o644)
 	if err != nil {
 		return err
 	}

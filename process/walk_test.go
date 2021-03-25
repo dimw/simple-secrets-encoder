@@ -3,10 +3,11 @@ package process
 import (
 	"crypto/rand"
 	"crypto/rsa"
-	"github.com/dimw/simple-secrets-encryptor/crypto"
-	"github.com/stretchr/testify/assert"
 	"regexp"
 	"testing"
+
+	"github.com/dimw/simple-secrets-encryptor/crypto"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestEncryptDecryptSecrets(t *testing.T) {
@@ -32,6 +33,7 @@ func TestEncryptDecryptSecrets(t *testing.T) {
 
 	decryptionProvider := crypto.CreateDecryptionProvider(privateKey)
 	got, err = Walk(got, decryptionProvider)
+	assert.NoError(t, err)
 	assert.Equal(t, "bar", got["foo"])
 	assert.Equal(t, "secret-bar", got["foo-secret"])
 	assert.Equal(t, "token-bar", got["fooToken"])

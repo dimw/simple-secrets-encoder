@@ -3,13 +3,14 @@ package crypto
 import (
 	"crypto/rand"
 	"crypto/rsa"
-	"github.com/stretchr/testify/assert"
 	"regexp"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestEncrypt(t *testing.T) {
-	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
+	privateKey, _ := rsa.GenerateKey(rand.Reader, 2048)
 
 	provider := Provider{
 		encryptedValueRegexp: regexp.MustCompile(`ENC\[.+]`),

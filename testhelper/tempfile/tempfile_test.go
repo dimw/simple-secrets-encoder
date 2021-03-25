@@ -1,10 +1,11 @@
 package tempfile
 
 import (
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"regexp"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCreate(t *testing.T) {

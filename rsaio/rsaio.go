@@ -4,7 +4,6 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
-	"fmt"
 	"io/ioutil"
 )
 
@@ -29,9 +28,7 @@ func LoadPrivateKey(filename string) (*rsa.PrivateKey, error) {
 
 	p, _ := pem.Decode(data)
 
-	if x509.IsEncryptedPEMBlock(p) {
-		return nil, fmt.Errorf("encrypted PEM blocks are not supported")
-	}
+	// TODO use passkey if needed
 
 	key, err := x509.ParsePKCS1PrivateKey(p.Bytes)
 

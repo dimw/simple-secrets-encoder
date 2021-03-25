@@ -1,12 +1,13 @@
 package io
 
 import (
-	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestReadYaml(t *testing.T) {
@@ -30,6 +31,7 @@ func TestWriteYaml(t *testing.T) {
 	assert.NoError(t, err)
 
 	content, err := ioutil.ReadFile(tmpYmlFile.Name)
+	assert.NoError(t, err)
 
 	assert.Equal(t, "foo: bar", strings.TrimSpace(string(content)))
 	_ = os.Remove(tmpYmlFile.Name)

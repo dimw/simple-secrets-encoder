@@ -2,15 +2,44 @@ package io
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"gopkg.in/yaml.v2"
 )
+
+var errUnsupportedFile = errors.New("unsupportedFileError")
+
+func UnsupportedFileError(filename string) error {
+	return fmt.Errorf(`%w: %v`, errUnsupportedFile, filename)
+}
+
+var errParsing = errors.New("parsingError")
+
+func ParsingError(filename string) error {
+	return fmt.Errorf(`%w: %v`, errParsing, filename)
+}
+
+var errFolderCreation = errors.New("folderCreationError")
+
+func FolderCreationError(path string) error {
+	return fmt.Errorf(`%w: %v`, errFolderCreation, path)
+}
+
+var errFileCreation = errors.New("fileCreationError")
+
+func FileCreationError(path string) error {
+	return fmt.Errorf(`%w: %v`, errFileCreation, path)
+}
 
 func Read(filename string) (map[string]interface{}, error) {
 	fileData, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
 	data := make(map[string]interface{})
 
 	switch filepath.Ext(filename) {
@@ -19,7 +48,7 @@ func Read(filename string) (map[string]interface{}, error) {
 	case ".json":
 		err = json.Unmarshal(fileData, &data)
 	default:
-		err = fmt.Errorf("unsupported file extension: %v", filename)
+		err = UnsupportedFileError(filename)
 	}
 
 	return data, err
@@ -34,22 +63,22 @@ func Write(filename string, data map[string]interface{}) error {
 	case ".json":
 		bytes, err = json.MarshalIndent(data, "", "  ")
 	default:
-		return fmt.Errorf("unsupported file extension: %v", filename)
+		return UnsupportedFileError(filename)
 	}
 
 	if err != nil {
-		return fmt.Errorf("could not marshal data")
+		return ParsingError(filename)
 	}
 
 	outputDir := filepath.Dir(filename)
-	err = os.MkdirAll(outputDir, 0770)
+	err = os.MkdirAll(outputDir, 0o770)
 	if err != nil {
-		return fmt.Errorf("cannot create output folder(s): %v", outputDir)
+		return FolderCreationError(outputDir)
 	}
 
-	err = ioutil.WriteFile(filename, bytes, 0644)
+	err = ioutil.WriteFile(filename, bytes, 0o644)
 	if err != nil {
-		return fmt.Errorf("cannot write to file: %v", filename)
+		return FileCreationError(filename)
 	}
 
 	return nil

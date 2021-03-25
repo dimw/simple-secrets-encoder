@@ -1,0 +1,57 @@
+run:
+  timeout: "10m"
+linters:
+  disable-all: true
+  enable:
+    - "asciicheck"
+    - "bodyclose"
+    - "deadcode"
+    - "depguard"
+    - "errcheck"
+    - "exportloopref"
+    - "gocognit"
+    - "gocritic"
+    - "gocyclo"
+    - "godot"
+    - "goerr113"
+    - "gofmt"
+    - "gofumpt"
+    - "goimports"
+    # - "golint"
+    - "govet"
+    - "ineffassign"
+    - "megacheck"
+    - "misspell"
+    - "nakedret"
+    - "nestif"
+    - "nolintlint"
+    - "structcheck"
+    # - "stylecheck"
+    - "unconvert"
+    - "unparam"
+    - "varcheck"
+
+  errcheck:
+    check-type-assertions: true
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+      - opinionated
+      - experimental
+  gocyclo:
+    min-complexity: 10
+  nolintlint:
+    allow-unused: false
+    allow-leading-space: false
+    allow-no-explanation:
+      - errcheck
+      - misspell
+    require-explanation: true
+    require-specific: true
+
+issues:
+  exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0

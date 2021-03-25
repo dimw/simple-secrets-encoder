@@ -1,10 +1,11 @@
-package generate_keys
+package generatekeys
 
 import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -17,13 +18,19 @@ type GenerateRSAArgs struct {
 	ReplaceKeys        bool
 }
 
+var errFileMustBePresent = errors.New("fileMustBePresentError")
+
+func FileMustBePresentError(filename string) error {
+	return fmt.Errorf(`%w: file "%v" must not be present`, errFileMustBePresent, filename)
+}
+
 func GenerateRSA(args GenerateRSAArgs) error {
 	if !args.ReplaceKeys && fileExists(args.PrivateKeyFilename) {
-		return fmt.Errorf(`file "%v" must not be present`, args.PrivateKeyFilename)
+		return FileMustBePresentError(args.PrivateKeyFilename)
 	}
 
 	if !args.ReplaceKeys && fileExists(args.PublicKeyFilename) {
-		return fmt.Errorf(`file "%v" must not be present`, args.PublicKeyFilename)
+		return FileMustBePresentError(args.PublicKeyFilename)
 	}
 
 	key, err := rsa.GenerateKey(rand.Reader, args.KeySize)
@@ -55,16 +62,18 @@ func savePrivateKey(fileName string, key *rsa.PrivateKey) {
 }
 
 func savePublicPEMKey(filename string, pubKey *rsa.PublicKey) {
-	var pemKey = &pem.Block{
+	pemKey := &pem.Block{
 		Type:  "RSA PUBLIC KEY",
 		Bytes: x509.MarshalPKCS1PublicKey(pubKey),
 	}
 
 	pemFile, err := os.Create(filename)
 	checkError(err)
-	defer pemFile.Close()
 
 	err = pem.Encode(pemFile, pemKey)
+	checkError(err)
+
+	err = pemFile.Close()
 	checkError(err)
 }
 
