@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/dimw/simple-secrets-encryptor/run"
 	"log"
 	"os"
+
+	"github.com/dimw/simple-secrets-encryptor/run"
 )
 
 func main() {

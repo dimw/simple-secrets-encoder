@@ -2,13 +2,14 @@ package encrypt
 
 import (
 	"fmt"
-	generate_keys "github.com/dimw/simple-secrets-encryptor/cmd/generate-keys"
-	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"math/rand"
 	"os"
 	"testing"
+
+	generate_keys "github.com/dimw/simple-secrets-encryptor/cmd/generate-keys"
+	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestShouldEncrypt(t *testing.T) {

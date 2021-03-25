@@ -10,9 +10,11 @@ const (
 	StrategyDecrypt = "decrypt"
 )
 
-var secretKeysRegexp = regexp.MustCompile("(?i)(secret|token|password)$")
-var encryptedValueRegexp = regexp.MustCompile("(?i)^ENC\\[.*]$")
-var encryptedValueParsingRegexp = regexp.MustCompile("^ENC\\[(?P<method>\\w+),data:(?P<data>.*)]$")
+var (
+	secretKeysRegexp            = regexp.MustCompile("(?i)(secret|token|password)$")
+	encryptedValueRegexp        = regexp.MustCompile(`(?i)^ENC\[.*]$`)
+	encryptedValueParsingRegexp = regexp.MustCompile(`^ENC\[(?P<method>\w+),data:(?P<data>.*)]$`)
+)
 
 func CreateEncryptionProvider(publicKey *rsa.PublicKey) *Provider {
 	return &Provider{

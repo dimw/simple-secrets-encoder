@@ -2,12 +2,12 @@ package process
 
 import (
 	"fmt"
-	"github.com/dimw/simple-secrets-encryptor/crypto"
 	"log"
+
+	"github.com/dimw/simple-secrets-encryptor/crypto"
 )
 
 func Walk(data map[string]interface{}, encryptionProvider *crypto.Provider) (map[string]interface{}, error) {
-
 	processedData := make(map[string]interface{})
 
 	for key, val := range data {

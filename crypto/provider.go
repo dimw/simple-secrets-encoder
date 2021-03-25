@@ -5,6 +5,7 @@ import (
 	"crypto/rsa"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"regexp"
 )
@@ -17,7 +18,6 @@ type Provider struct {
 	encryptedValueParsingRegexp *regexp.Regexp
 	publicKey                   *rsa.PublicKey
 	privateKey                  *rsa.PrivateKey
-	processFunc                 ProcessFunc
 	Strategy                    string
 }
 
@@ -38,6 +38,18 @@ func (p *Provider) Encrypt(val string) (string, error) {
 	return val, nil
 }
 
+var errUnsupportedEncryptionMethod = errors.New("unsupportedEncryptionMethodError")
+
+func UnsupportedEncryptionMethodError(method string) error {
+	return fmt.Errorf(`%w: %v`, errUnsupportedEncryptionMethod, method)
+}
+
+var errBase64Decoding = errors.New("base64DecodingError")
+
+func Base64DecodingError() error {
+	return fmt.Errorf(`%w: data cannot be encoded from Base64`, errBase64Decoding)
+}
+
 func (p *Provider) Decrypt(val string) (string, error) {
 	if p.IsEncrypted(val) {
 		subMatches := p.encryptedValueParsingRegexp.FindStringSubmatch(val)
@@ -45,14 +57,14 @@ func (p *Provider) Decrypt(val string) (string, error) {
 		method := subMatches[methodSubmatchIndex]
 
 		if method != "rsa" {
-			return "", fmt.Errorf(`RSA encryption method is supported only, found "%v"`, method)
+			return "", UnsupportedEncryptionMethodError(method)
 		}
 
 		dataSubmatchIndex := p.encryptedValueParsingRegexp.SubexpIndex("data")
 		dataEnc := subMatches[dataSubmatchIndex]
 		data, err := base64.StdEncoding.DecodeString(dataEnc)
 		if err != nil {
-			return "", fmt.Errorf(`data cannot be encoded from Base64`)
+			return "", Base64DecodingError()
 		}
 
 		decodedVal, err := rsa.DecryptOAEP(sha256.New(), rand.Reader, p.privateKey, data, []byte(""))

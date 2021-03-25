@@ -4,14 +4,16 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-const flagOutdir = "outdir"
-const flagWorkdir = "workdir"
-const flagFilenamePattern = "filename-pattern"
-const flagPublicKeyFile = "public-key-file"
-const flagPrivateKeyFile = "private-key-file"
-const flagKeySize = "key-size"
-const flagReplaceKeys = "replace-keys"
-const flagOutputFormat = "output-format"
+const (
+	flagOutdir          = "outdir"
+	flagWorkdir         = "workdir"
+	flagFilenamePattern = "filename-pattern"
+	flagPublicKeyFile   = "public-key-file"
+	flagPrivateKeyFile  = "private-key-file"
+	flagKeySize         = "key-size"
+	flagReplaceKeys     = "replace-keys"
+	flagOutputFormat    = "output-format"
+)
 
 func CreateApp() *cli.App {
 	app := &cli.App{

@@ -4,20 +4,23 @@ import (
 	crypto_rand "crypto/rand"
 	"crypto/rsa"
 	"fmt"
-	"github.com/dimw/simple-secrets-encryptor/crypto"
-	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"math/rand"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/dimw/simple-secrets-encryptor/testhelper/ossafe"
+
+	"github.com/dimw/simple-secrets-encryptor/crypto"
+	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestShouldIterate(t *testing.T) {
 	tmpDir, _ := ioutil.TempDir("./", "tmp-*")
 	tmpDir2, _ := ioutil.TempDir(tmpDir, "tmp2-*")
-	defer os.RemoveAll(tmpDir)
+	defer ossafe.RemoveAll(tmpDir)
 	_ = tempfile.NewT(t, tmpDir2, "foo.*.yml", "")
 
 	err := IterateFiles(tmpDir, "*.yml", "", "", nil)
@@ -27,14 +30,14 @@ func TestShouldIterate(t *testing.T) {
 func TestShouldOutputToOutdir(t *testing.T) {
 	// create folder with secrets
 	tmpDir, _ := ioutil.TempDir("./", "tmp-*")
-	defer os.RemoveAll(tmpDir)
+	defer ossafe.RemoveAll(tmpDir)
 	tmpDir2, _ := ioutil.TempDir(tmpDir, "subdir-*")
-	defer os.RemoveAll(tmpDir2)
+	defer ossafe.RemoveAll(tmpDir2)
 	tmpFile := tempfile.NewT(t, tmpDir2, "foo.*.yml", "foo-secret: bar")
 
 	// define output folder
 	outdir := fmt.Sprintf("tmp-out-%v", rand.Int())
-	defer os.RemoveAll(outdir)
+	defer ossafe.RemoveAll(outdir)
 
 	privateKey, _ := rsa.GenerateKey(crypto_rand.Reader, 2048)
 	err := IterateFiles(tmpDir, "*.yml", outdir, "", crypto.CreateEncryptionProvider(&privateKey.PublicKey))
@@ -47,9 +50,9 @@ func TestShouldOutputToOutdir(t *testing.T) {
 
 func TestShouldCreateOutdir(t *testing.T) {
 	tmpDir, _ := ioutil.TempDir("./", "tmp-*")
-	defer os.RemoveAll(tmpDir)
+	defer ossafe.RemoveAll(tmpDir)
 	tmpOutDir := fmt.Sprintf("tmp-out-%v", rand.Int())
-	defer os.RemoveAll(tmpOutDir)
+	defer ossafe.RemoveAll(tmpOutDir)
 	_ = tempfile.NewT(t, tmpDir, "foo.*.yml", "")
 
 	err := IterateFiles(tmpDir, "*.yml", tmpOutDir, "", nil)
@@ -61,9 +64,9 @@ func TestShouldCreateOutdir(t *testing.T) {
 
 func TestShouldIgnoreOutdirCreationIfExists(t *testing.T) {
 	tmpDir, _ := ioutil.TempDir("./", "tmp-*")
-	defer os.RemoveAll(tmpDir)
+	defer ossafe.RemoveAll(tmpDir)
 	tmpOutDir, _ := ioutil.TempDir("./", "tmp-out-*")
-	defer os.RemoveAll(tmpOutDir)
+	defer ossafe.RemoveAll(tmpOutDir)
 	_ = tempfile.NewT(t, tmpDir, "foo.*.yml", "")
 
 	err := IterateFiles(tmpDir, "*.yml", tmpOutDir, "", nil)

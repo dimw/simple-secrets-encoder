@@ -1,9 +1,10 @@
 package fileutils
 
 import (
-	"github.com/gobwas/glob"
 	"os"
 	"path/filepath"
+
+	"github.com/gobwas/glob"
 )
 
 func Glob(workdir string, pattern string) ([]string, error) {

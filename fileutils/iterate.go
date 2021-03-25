@@ -1,14 +1,22 @@
 package fileutils
 
 import (
+	"errors"
 	"fmt"
-	"github.com/dimw/simple-secrets-encryptor/crypto"
-	"github.com/dimw/simple-secrets-encryptor/io"
-	"github.com/dimw/simple-secrets-encryptor/process"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/dimw/simple-secrets-encryptor/crypto"
+	"github.com/dimw/simple-secrets-encryptor/io"
+	"github.com/dimw/simple-secrets-encryptor/process"
 )
+
+var errReadFile = errors.New("readFileError")
+
+func ReadFileError(filename string) error {
+	return fmt.Errorf(`%w: %v`, errReadFile, filename)
+}
 
 func IterateFiles(workdir string, filenamePattern string, outdir string, format string, provider *crypto.Provider) error {
 	workdir = filepath.Clean(workdir)
@@ -21,14 +29,14 @@ func IterateFiles(workdir string, filenamePattern string, outdir string, format 
 		outdir = workdir
 	} else {
 		outdir = filepath.Clean(outdir)
-		_ = os.Mkdir(outdir, 0770)
+		_ = os.Mkdir(outdir, 0o770)
 	}
 
 	for _, filename := range files {
 		log.Printf(`Reading: %v`, filename)
 		data, err := io.Read(filename)
 		if err != nil {
-			return fmt.Errorf("error reading file: %v", filename)
+			return ReadFileError(filename)
 		}
 
 		encodedData, err := process.Walk(data, provider)

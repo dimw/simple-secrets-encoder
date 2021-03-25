@@ -1,12 +1,13 @@
 package io
 
 import (
-	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
-	"github.com/stretchr/testify/assert"
+	"github.com/dimw/simple-secrets-encryptor/testhelper/ossafe"
 	"io/ioutil"
-	"os"
 	"strings"
 	"testing"
+
+	"github.com/dimw/simple-secrets-encryptor/testhelper/tempfile"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestShouldNotReadUnsupportedFileFormat(t *testing.T) {
@@ -82,7 +83,7 @@ func TestShouldCreateSubFolders(t *testing.T) {
 	data["foo"] = "bar"
 
 	filename := "booh/" + tmpFile.Name
-	defer os.Remove(filename)
+	defer ossafe.Remove(filename)
 	err := Write(filename, data)
 	assert.NoError(t, err)
 

@@ -3,10 +3,11 @@ package process
 import (
 	"crypto/rand"
 	"crypto/rsa"
-	"github.com/dimw/simple-secrets-encryptor/crypto"
-	"github.com/stretchr/testify/assert"
 	"regexp"
 	"testing"
+
+	"github.com/dimw/simple-secrets-encryptor/crypto"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestEncryptDecryptSecrets(t *testing.T) {

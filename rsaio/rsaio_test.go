@@ -2,11 +2,12 @@ package rsaio
 
 import (
 	"fmt"
-	generate_keys "github.com/dimw/simple-secrets-encryptor/cmd/generate-keys"
-	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"os"
 	"testing"
+
+	generate_keys "github.com/dimw/simple-secrets-encryptor/cmd/generate-keys"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestShouldLoadPrivateKey(t *testing.T) {
